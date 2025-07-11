@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ücret Simülatörü - Adım Adım</title>
+  <style>
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      max-width: 700px; 
+      margin: 40px auto; 
+      padding: 20px; 
+      background: #f8f9fa;
+    }
+    .wizard-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .wizard-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    .wizard-header h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 300;
+    }
+    .progress-bar {
+      display: flex;
+      background: #e9ecef;
+      height: 4px;
+      margin: 0;
+    }
+    .progress-step {
+      flex: 1;
+      background: #6c757d;
+      transition: background 0.3s;
+    }
+    .progress-step.active {
+      background: #28a745;
+    }
+    .step {
+      display: none;
+      padding: 40px;
+      min-height: 300px;
+    }
+    .step.active {
+      display: block;
+    }
+    .step h2 {
+      color: #495057;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    .step p {
+      color: #6c757d;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #495057;
+    }
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 16px;
+      background: white;
+      transition: border-color 0.3s;
+    }
+    select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    .service-options {
+      display: grid;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .service-card {
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .service-card:hover {
+      border-color: #667eea;
+      background: #f8f9ff;
+    }
+    .service-card.selected {
+      border-color: #28a745;
+      background: #d4edda;
+    }
+    .service-card h3 {
+      margin: 0 0 10px 0;
+      color: #495057;
+    }
+    .service-card p {
+      margin: 0;
+      color: #6c757d;
+      font-size: 14px;
+    }
+    .service-price {
+      font-weight: bold;
+      color: #28a745;
+      font-size: 16px;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e9ecef;
+    }
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #5a6fd8;
+    }
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .result-summary {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #c3e6cb;
+    }
+    .result-item:last-child {
+      border-bottom: none;
+      font-weight: bold;
+      font-size: 18px;
+      color: #155724;
+    }
+    .step-indicator {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <div class="wizard-container">
+    <div class="wizard-header">
+      <h1>2025 Güz Ücret Simülatörü</h1>
+    </div>
+    
+    <div class="progress-bar">
+      <div class="progress-step active" id="progress-1"></div>
+      <div class="progress-step" id="progress-2"></div>
+      <div class="progress-step" id="progress-3"></div>
+      <div class="progress-step" id="progress-4"></div>
+      <div class="progress-step" id="progress-5"></div>
+    </div>
+
+    <!-- Step 1: Student Type -->
+    <div class="step active" id="step-1">
+      <div class="step-indicator">Adım 1 / 5</div>
+      <h2>Öğrenci Tipinizi Seçin</h2>
+      <p>Lütfen hangi kategoride öğrenci olduğunuzu belirtin.</p>
+      
+      <label>Öğrenci Tipi</label>
+      <select id="studentType">
+        <option value="">Seçiniz...</option>
+        <option value="lys">LYS ile Yerleşen</option>
+        <option value="ua">Uluslararası/Transfer</option>
+      </select>
+
+      <div class="buttons">
+        <div></div>
+        <button class="btn btn-primary" onclick="nextStep()" id="step1-next" disabled>Devam Et</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Entry Year -->
+    <div class="step" id="step-2">
+      <div class="step-indicator">Adım 2 / 5</div>
+      <h2>Giriş Yılınızı Seçin</h2>
+      <p>Üniversiteye hangi yıl girdiniz?</p>
+      
+      <label>Giriş Yılı</label>
+      <select id="entryYear">
+        <option value="">Seçiniz...</option>
+      </select>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="prevStep()">Geri</button>
+        <button class="btn btn-primary" onclick="nextStep()" id="step2-next" disabled>Devam Et</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Scholarship -->
+    <div class="step" id="step-3">
+      <div class="step-indicator">Adım 3 / 5</div>
+      <h2>Burs Durumunuz</h2>
+      <p>Eğer bursunuz varsa, burs oranınızı seçin.</p>
+      
+      <label>Burs Oranı</label>
+      <select id="scholarship">
+        <option value="0">Bursuz (%0)</option>
+        <option value="10">%10 Burs</option>
+        <option value="20">%20 Burs</option>
+        <option value="25">%25 Burs</option>
+        <option value="30">%30 Burs</option>
+        <option value="40">%40 Burs</option>
+        <option value="50">%50 Burs</option>
+        <option value="60">%60 Burs</option>
+        <option value="70">%70 Burs</option>
+        <option value="75">%75 Burs</option>
+        <option value="80">%80 Burs</option>
+        <option value="90">%90 Burs</option>
+        <option value="100">Tam Burs (%100)</option>
+      </select>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="prevStep()">Geri</button>
+        <button class="btn btn-primary" onclick="nextStep()">Devam Et</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Additional Services -->
+    <div class="step" id="step-4">
+      <div class="step-indicator">Adım 4 / 5</div>
+      <h2>Ek Hizmetler</h2>
+      <p>Aşağıdaki ek hizmetlerden hangilerini almak istiyorsunuz?</p>
+      
+      <div class="service-options">
+        <div class="service-card" onclick="toggleService('yurt')" id="service-yurt">
+          <h3>🏠 Yurt Hizmeti</h3>
+          <p>Kampüs içi konaklama imkanı</p>
+          <div class="service-price">50.000 TL</div>
+        </div>
+        
+        <div class="service-card" onclick="toggleService('yemek')" id="service-yemek">
+          <h3>🍽️ Yemek Planı</h3>
+          <p>Kampüs yemekhanesi yıllık paketi</p>
+          <div class="service-price">30.000 TL</div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="prevStep()">Geri</button>
+        <button class="btn btn-primary" onclick="nextStep()">Sonucu Gör</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Results -->
+    <div class="step" id="step-5">
+      <div class="step-indicator">Adım 5 / 5</div>
+      <h2>🎉 Ücret Hesaplama Sonucu</h2>
+      <p>İşte 2025 Güz dönemi için toplam ücretiniz:</p>
+      
+      <div class="result-summary" id="resultSummary">
+        <!-- Results will be populated here -->
+      </div>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="prevStep()">Geri</button>
+        <button class="btn btn-primary" onclick="startOver()">Yeniden Hesapla</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const feeData = {
+      lys: {
+        2015: 430000, 2016: 480000, 2017: 502500, 2018: 535000
+      },
+      ua: {
+        2019: 622500, 2020: 632500, 2021: 657500,
+        2022: 712500, 2023: 765000, 2024: 837500
+      }
+    };
+
+    const addonPrices = {
+      yurt: 50000,
+      yemek: 30000
+    };
+
+    let currentStep = 1;
+    const selectedServices = new Set();
+
+    // Step navigation functions
+    function nextStep() {
+      if (currentStep < 5) {
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        document.getElementById(`progress-${currentStep}`).classList.add('active');
+        currentStep++;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        
+        if (currentStep === 2) {
+          updateYearOptions();
+        } else if (currentStep === 5) {
+          displayResults();
+        }
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        document.getElementById(`progress-${currentStep}`).classList.remove('active');
+        currentStep--;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+      }
+    }
+
+    function startOver() {
+      // Reset to step 1
+      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+      document.querySelectorAll('.progress-step').forEach(progress => progress.classList.remove('active'));
+      
+      currentStep = 1;
+      document.getElementById('step-1').classList.add('active');
+      document.getElementById('progress-1').classList.add('active');
+      
+      // Reset form values
+      document.getElementById('studentType').value = '';
+      document.getElementById('entryYear').value = '';
+      document.getElementById('scholarship').value = '0';
+      selectedServices.clear();
+      
+      // Reset service cards
+      document.querySelectorAll('.service-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      
+      // Reset buttons
+      document.getElementById('step1-next').disabled = true;
+      document.getElementById('step2-next').disabled = true;
+    }
+
+    // Populate years dropdown dynamically
+    function updateYearOptions() {
+      const type = document.getElementById('studentType').value;
+      const yearSelect = document.getElementById('entryYear');
+      yearSelect.innerHTML = '<option value="">Seçiniz...</option>';
+      
+      if (type && feeData[type]) {
+        Object.keys(feeData[type]).forEach(year => {
+          const opt = document.createElement('option');
+          opt.value = year;
+          opt.textContent = year;
+          yearSelect.appendChild(opt);
+        });
+      }
+    }
+
+    // Toggle service selection
+    function toggleService(serviceType) {
+      const card = document.getElementById(`service-${serviceType}`);
+      if (selectedServices.has(serviceType)) {
+        selectedServices.delete(serviceType);
+        card.classList.remove('selected');
+      } else {
+        selectedServices.add(serviceType);
+        card.classList.add('selected');
+      }
+    }
+
+    // Display final results
+    function displayResults() {
+      const type = document.getElementById('studentType').value;
+      const year = document.getElementById('entryYear').value;
+      const scholarship = parseFloat(document.getElementById('scholarship').value || 0);
+      
+      let baseFee = feeData[type][year] || 0;
+      const originalFee = baseFee;
+      const scholarshipAmount = baseFee * (scholarship / 100);
+      baseFee = baseFee - scholarshipAmount;
+
+      let addonsTotal = 0;
+      const selectedAddonsList = [];
+      
+      selectedServices.forEach(service => {
+        if (addonPrices[service]) {
+          addonsTotal += addonPrices[service];
+          const serviceName = service === 'yurt' ? 'Yurt Hizmeti' : 'Yemek Planı';
+          selectedAddonsList.push({
+            name: serviceName,
+            price: addonPrices[service]
+          });
+        }
+      });
+
+      const total = baseFee + addonsTotal;
+      
+      // Create results HTML
+      let resultsHTML = `
+        <div class="result-item">
+          <span>Temel Eğitim Ücreti (${year}):</span>
+          <span>${originalFee.toLocaleString('tr-TR')} TL</span>
+        </div>
+      `;
+      
+      if (scholarship > 0) {
+        resultsHTML += `
+          <div class="result-item">
+            <span>Burs İndirimi (%${scholarship}):</span>
+            <span>-${scholarshipAmount.toLocaleString('tr-TR')} TL</span>
+          </div>
+          <div class="result-item">
+            <span>İndirimli Eğitim Ücreti:</span>
+            <span>${baseFee.toLocaleString('tr-TR')} TL</span>
+          </div>
+        `;
+      }
+      
+      selectedAddonsList.forEach(addon => {
+        resultsHTML += `
+          <div class="result-item">
+            <span>${addon.name}:</span>
+            <span>+${addon.price.toLocaleString('tr-TR')} TL</span>
+          </div>
+        `;
+      });
+      
+      resultsHTML += `
+        <div class="result-item">
+          <span>TOPLAM ÜCRET:</span>
+          <span>${total.toLocaleString('tr-TR')} TL</span>
+        </div>
+      `;
+      
+      document.getElementById('resultSummary').innerHTML = resultsHTML;
+    }
+
+    // Event listeners for form validation
+    document.getElementById('studentType').addEventListener('change', function() {
+      document.getElementById('step1-next').disabled = !this.value;
+    });
+
+    document.getElementById('entryYear').addEventListener('change', function() {
+      document.getElementById('step2-next').disabled = !this.value;
+    });
+
+    // Initialize the wizard
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set initial state
+      currentStep = 1;
+      document.getElementById('step1-next').disabled = true;
+      document.getElementById('step2-next').disabled = true;
+    });
+  </script>
+
+</body>
+</html>
