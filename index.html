@@ -32,7 +32,7 @@
       font-weight: 300;
     }
     .university-logo {
-      width: 60px;
+      width: 200px;
       height: auto;
       margin-bottom: 15px;
     }
@@ -218,12 +218,34 @@
     .test-button {
       margin-top: 15px;
     }
+    .troubleshooting {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #6c757d;
+      text-align: left;
+    }
+    .troubleshooting summary {
+      cursor: pointer;
+      color: #A6192E;
+    }
+    .troubleshooting-content {
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+    .troubleshooting ol {
+      font-size: 11px;
+    }
+    .troubleshooting code {
+      font-size: 10px;
+      background: #f1f1f1;
+      padding: 2px;
+    }
   </style>
 </head>
 <body>
   <div class="wizard-container">
     <div class="wizard-header">
-      <img src="https://www.ku.edu.tr/wp-content/uploads/2023/06/cropped-logo.png" alt="Koç Üniversitesi Logo" class="university-logo">
+      <img src="https://identity.hub.ku.edu.tr/resources/pvan7/login/kuhub/img/ku-logo.png" alt="Koç Üniversitesi Logo" class="university-logo">
       <h1>2025 Güz Ücret Simülatörü</h1>
       <div>
         <a href="logic.html" class="logic-link">
@@ -254,6 +276,25 @@
         <button class="btn btn-secondary test-button" onclick="testGoogleAppsScript()">
           🔍 Bağlantıyı Test Et
         </button>
+        <div class="troubleshooting">
+          <details>
+            <summary>🛠️ Sorun Giderme Rehberi</summary>
+            <div class="troubleshooting-content">
+              <p><strong>CORS hatası alıyorsanız:</strong></p>
+              <ol>
+                <li>Google Apps Script projenizi açın</li>
+                <li>"Deploy" > "New Deployment" > "Web app" seçin</li>
+                <li>"Execute as: Me" olarak ayarlayın</li>
+                <li>"Who has access: Anyone" olarak ayarlayın</li>
+                <li>"Deploy" butonuna tıklayın</li>
+                <li>Yeni web app URL'sini kopyalayın</li>
+                <li>Kod değişiklikleri için yeniden deploy edin</li>
+              </ol>
+              <p><strong>Geçerli URL:</strong><br>
+              <code>${DATA_URL}</code></p>
+            </div>
+          </details>
+        </div>
       </div>
       
       <div id="form-content" class="form-content-hidden">
@@ -388,32 +429,53 @@
     const maxSteps = 7;
     
     // Google Apps Script URL
-    const DATA_URL = 'https://script.google.com/macros/s/AKfycbxM7dwSmcODD8yyBr4W-ne3-jcMfXWmz_ee7_YWC9BTJfKa0UYpUZBkMzrPHdtp-JzU/exec';
+    const DATA_URL = 'https://script.google.com/macros/library/d/15WnM0dp4ukVJVmKiYAFcqf1etHc1lC-iWjTUFaG2bAukLn2eFZJ5tAgJ/1';
 
     // Load tuition data from Google Apps Script
     async function loadTuitionData() {
       try {
         console.log('Attempting to fetch data from:', DATA_URL);
         
-        const response = await fetch(DATA_URL, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-          },
-        });
+        // Try multiple approaches to handle CORS
+        let response;
+        
+        // Method 1: Standard fetch with CORS headers
+        try {
+          response = await fetch(DATA_URL, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          });
+        } catch (corsError) {
+          console.log('CORS fetch failed, trying alternative method:', corsError);
+          
+          // Method 2: Try with no-cors mode (limited but might work)
+          response = await fetch(DATA_URL, {
+            method: 'GET',
+            mode: 'no-cors'
+          });
+        }
         
         console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers);
+        console.log('Response type:', response.type);
+        console.log('Response ok:', response.ok);
+        
+        if (response.type === 'opaque') {
+          throw new Error('CORS policy blocked the request. The Google Apps Script may need to be reconfigured.');
+        }
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const text = await response.text();
-        console.log('Raw response text:', text);
+        console.log('Raw response text (first 200 chars):', text.substring(0, 200));
         
         tuitionData = JSON.parse(text);
-        console.log('Tuition data loaded successfully:', tuitionData);
+        console.log('Tuition data loaded successfully:', tuitionData.length, 'records');
         
         // Validate data structure
         if (!Array.isArray(tuitionData) || tuitionData.length === 0) {
@@ -428,8 +490,8 @@
         // More specific error messages
         let errorMessage = 'Veri yüklenirken hata oluştu: ';
         
-        if (error.message.includes('Failed to fetch')) {
-          errorMessage += 'İnternet bağlantısı veya CORS sorunu. ';
+        if (error.message.includes('Failed to fetch') || error.message.includes('CORS')) {
+          errorMessage += `CORS sorunu tespit edildi. Google Apps Script'in web app olarak doğru şekilde deploy edildiğinden ve "Anyone" erişimine sahip olduğundan emin olun. `;
         } else if (error.message.includes('HTTP error')) {
           errorMessage += `Sunucu hatası (${error.message}). `;
         } else if (error.message.includes('Invalid data format')) {
@@ -439,6 +501,12 @@
         }
         
         errorMessage += 'Fallback verilerle devam ediliyor...';
+        
+        console.log('Error details for debugging:');
+        console.log('- URL:', DATA_URL);
+        console.log('- Error type:', error.constructor.name);
+        console.log('- Error message:', error.message);
+        console.log('- Stack:', error.stack);
         
         alert(errorMessage);
         
@@ -507,33 +575,110 @@
 
     // Test function to manually check Google Apps Script connection
     async function testGoogleAppsScript() {
-      console.log('Testing Google Apps Script connection...');
+      console.log('🔍 Testing Google Apps Script connection...');
       
+      const diagnostics = {
+        url: DATA_URL,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        tests: []
+      };
+      
+      // Test 1: Basic connectivity
       try {
+        console.log('Test 1: Basic fetch test...');
         const response = await fetch(DATA_URL, {
           method: 'GET',
           mode: 'cors',
         });
         
-        console.log('Test - Response status:', response.status);
-        console.log('Test - Response OK:', response.ok);
+        diagnostics.tests.push({
+          name: 'Basic Fetch',
+          status: 'SUCCESS',
+          details: {
+            status: response.status,
+            statusText: response.statusText,
+            ok: response.ok,
+            type: response.type,
+            url: response.url
+          }
+        });
         
         const text = await response.text();
-        console.log('Test - Raw response:', text.substring(0, 200) + '...');
+        console.log('Response text (first 500 chars):', text.substring(0, 500));
         
-        const data = JSON.parse(text);
-        console.log('Test - Parsed data:', data);
-        
-        alert(`Bağlantı başarılı! ${data.length} kayıt bulundu.`);
-        
-        // Use the successfully loaded data
-        tuitionData = data;
-        populateDropdowns();
+        try {
+          const data = JSON.parse(text);
+          console.log('✅ JSON parsing successful, records found:', data.length);
+          
+          diagnostics.tests.push({
+            name: 'JSON Parsing',
+            status: 'SUCCESS',
+            details: {
+              recordCount: data.length,
+              sampleRecord: data[0] || null
+            }
+          });
+          
+          alert(`✅ Bağlantı başarılı!\n\n📊 ${data.length} kayıt bulundu\n🔗 URL: ${DATA_URL}\n⏰ Test zamanı: ${new Date().toLocaleString('tr-TR')}`);
+          
+          // Use the successfully loaded data
+          tuitionData = data;
+          populateDropdowns();
+          
+        } catch (parseError) {
+          diagnostics.tests.push({
+            name: 'JSON Parsing',
+            status: 'FAILED',
+            error: parseError.message,
+            rawResponse: text.substring(0, 200)
+          });
+          
+          console.error('❌ JSON parsing failed:', parseError);
+          alert(`❌ JSON çözümleme hatası:\n${parseError.message}\n\nHam yanıt (ilk 200 karakter):\n${text.substring(0, 200)}`);
+        }
         
       } catch (error) {
-        console.error('Test - Connection failed:', error);
-        alert(`Bağlantı hatası: ${error.message}`);
+        diagnostics.tests.push({
+          name: 'Basic Fetch',
+          status: 'FAILED',
+          error: error.message,
+          errorType: error.constructor.name
+        });
+        
+        console.error('❌ Connection test failed:', error);
+        
+        // Detailed error analysis
+        let errorAnalysis = '❌ Bağlantı testi başarısız:\n\n';
+        
+        if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+          errorAnalysis += '🚫 CORS Hatası veya Ağ Problemi:\n';
+          errorAnalysis += '• Google Apps Script deploy edilmemiş olabilir\n';
+          errorAnalysis += '• Web app "Anyone" erişimine sahip değil\n';
+          errorAnalysis += '• İnternet bağlantısı problemi\n';
+          errorAnalysis += '• Firewall veya proxy bloklama\n\n';
+          errorAnalysis += '✅ Çözüm Önerileri:\n';
+          errorAnalysis += '1. Google Apps Script\'i "Web app" olarak deploy edin\n';
+          errorAnalysis += '2. "Who has access" ayarını "Anyone" yapın\n';
+          errorAnalysis += '3. Deploy edildikten sonra yeni URL\'yi kullanın\n';
+          errorAnalysis += '4. İnternet bağlantınızı kontrol edin';
+        } else {
+          errorAnalysis += `Hata türü: ${error.name}\n`;
+          errorAnalysis += `Hata mesajı: ${error.message}`;
+        }
+        
+        alert(errorAnalysis);
       }
+      
+      // Log full diagnostics
+      console.log('🔍 Full diagnostics report:', diagnostics);
+      
+      // Test 2: Alternative URL test (if needed)
+      console.log('💡 Troubleshooting tips:');
+      console.log('1. Make sure Google Apps Script is deployed as Web App');
+      console.log('2. Set "Execute as: Me" and "Who has access: Anyone"');
+      console.log('3. Use the web app URL, not the script editor URL');
+      console.log('4. Redeploy after any code changes');
     }
 
     // Get unique values for a specific field from the data
