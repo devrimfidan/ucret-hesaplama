@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ücret Simülatörü - Adım Adım</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+    
     body { 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      font-family: 'Source Sans Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
       max-width: 700px; 
       margin: 40px auto; 
       padding: 20px; 
@@ -19,15 +21,20 @@
       overflow: hidden;
     }
     .wizard-header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #A6192E 0%, #8a1426 100%);
       color: white;
       padding: 30px;
       text-align: center;
     }
     .wizard-header h1 {
-      margin: 0;
+      margin: 0 0 10px 0;
       font-size: 28px;
       font-weight: 300;
+    }
+    .university-logo {
+      width: 60px;
+      height: auto;
+      margin-bottom: 15px;
     }
     .progress-bar {
       display: flex;
@@ -41,7 +48,7 @@
       transition: background 0.3s;
     }
     .progress-step.active {
-      background: #28a745;
+      background: #A6192E;
     }
     .step {
       display: none;
@@ -75,10 +82,11 @@
       font-size: 16px;
       background: white;
       transition: border-color 0.3s;
+      margin-bottom: 20px;
     }
     select:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: #A6192E;
     }
     .service-options {
       display: grid;
@@ -93,12 +101,12 @@
       transition: all 0.3s;
     }
     .service-card:hover {
-      border-color: #667eea;
-      background: #f8f9ff;
+      border-color: #A6192E;
+      background: #fdf1f1;
     }
     .service-card.selected {
-      border-color: #28a745;
-      background: #d4edda;
+      border-color: #A6192E;
+      background: #f8e6e8;
     }
     .service-card h3 {
       margin: 0 0 10px 0;
@@ -111,7 +119,7 @@
     }
     .service-price {
       font-weight: bold;
-      color: #28a745;
+      color: #A6192E;
       font-size: 16px;
     }
     .buttons {
@@ -131,11 +139,11 @@
       font-weight: 600;
     }
     .btn-primary {
-      background: #667eea;
+      background: #A6192E;
       color: white;
     }
     .btn-primary:hover {
-      background: #5a6fd8;
+      background: #8a1426;
     }
     .btn-secondary {
       background: #6c757d;
@@ -149,8 +157,8 @@
       cursor: not-allowed;
     }
     .result-summary {
-      background: #d4edda;
-      border: 1px solid #c3e6cb;
+      background: #f8e6e8;
+      border: 1px solid #e6b3ba;
       border-radius: 8px;
       padding: 20px;
       margin-top: 20px;
@@ -160,13 +168,13 @@
       justify-content: space-between;
       margin-bottom: 10px;
       padding: 8px 0;
-      border-bottom: 1px solid #c3e6cb;
+      border-bottom: 1px solid #e6b3ba;
     }
     .result-item:last-child {
       border-bottom: none;
       font-weight: bold;
       font-size: 18px;
-      color: #155724;
+      color: #A6192E;
     }
     .step-indicator {
       text-align: center;
@@ -191,6 +199,7 @@
 <body>
   <div class="wizard-container">
     <div class="wizard-header">
+      <img src="https://www.ku.edu.tr/wp-content/uploads/2023/06/cropped-logo.png" alt="Koç Üniversitesi Logo" class="university-logo">
       <h1>2025 Güz Ücret Simülatörü</h1>
       <div>
         <a href="logic.html" class="logic-link">
@@ -205,19 +214,19 @@
       <div class="progress-step" id="progress-3"></div>
       <div class="progress-step" id="progress-4"></div>
       <div class="progress-step" id="progress-5"></div>
+      <div class="progress-step" id="progress-6"></div>
+      <div class="progress-step" id="progress-7"></div>
     </div>
 
-    <!-- Step 1: Student Type -->
+    <!-- Step 1: Admit Type -->
     <div class="step active" id="step-1">
-      <div class="step-indicator">Adım 1 / 5</div>
-      <h2>Öğrenci Tipinizi Seçin</h2>
-      <p>Lütfen hangi kategoride öğrenci olduğunuzu belirtin.</p>
+      <div class="step-indicator">Adım 1 / 7</div>
+      <h2>Kabul Tipinizi Seçin</h2>
+      <p>Lütfen hangi kabul türünde öğrenci olduğunuzu belirtin.</p>
       
-      <label for="studentType">Öğrenci Tipi</label>
-      <select id="studentType" title="Öğrenci tipinizi seçin">
+      <label for="admitType">Kabul Tipi</label>
+      <select id="admitType" title="Kabul tipinizi seçin">
         <option value="">Seçiniz...</option>
-        <option value="lys">LYS ile Yerleşen</option>
-        <option value="ua">Uluslararası/Transfer</option>
       </select>
 
       <div class="buttons">
@@ -226,14 +235,14 @@
       </div>
     </div>
 
-    <!-- Step 2: Entry Year -->
+    <!-- Step 2: Turkish Citizen -->
     <div class="step" id="step-2">
-      <div class="step-indicator">Adım 2 / 5</div>
-      <h2>Giriş Yılınızı Seçin</h2>
-      <p>Üniversiteye hangi yıl girdiniz?</p>
+      <div class="step-indicator">Adım 2 / 7</div>
+      <h2>Vatandaşlık Durumunuz</h2>
+      <p>Türk vatandaşı mısınız?</p>
       
-      <label for="entryYear">Giriş Yılı</label>
-      <select id="entryYear" title="Giriş yılınızı seçin">
+      <label for="turkishCitizen">Vatandaşlık</label>
+      <select id="turkishCitizen" title="Vatandaşlık durumunuzu seçin">
         <option value="">Seçiniz...</option>
       </select>
 
@@ -243,64 +252,87 @@
       </div>
     </div>
 
-    <!-- Step 3: Scholarship -->
+    <!-- Step 3: Academic Program -->
     <div class="step" id="step-3">
-      <div class="step-indicator">Adım 3 / 5</div>
-      <h2>Burs Durumunuz</h2>
-      <p>Eğer bursunuz varsa, burs oranınızı seçin.</p>
+      <div class="step-indicator">Adım 3 / 7</div>
+      <h2>Akademik Program</h2>
+      <p>Hangi akademik programda okuyorsunuz?</p>
       
-      <label for="scholarship">Burs Oranı</label>
-      <select id="scholarship" title="Burs oranınızı seçin">
-        <option value="0">Bursuz (%0)</option>
-        <option value="10">%10 Burs</option>
-        <option value="20">%20 Burs</option>
-        <option value="25">%25 Burs</option>
-        <option value="30">%30 Burs</option>
-        <option value="40">%40 Burs</option>
-        <option value="50">%50 Burs</option>
-        <option value="60">%60 Burs</option>
-        <option value="70">%70 Burs</option>
-        <option value="75">%75 Burs</option>
-        <option value="80">%80 Burs</option>
-        <option value="90">%90 Burs</option>
-        <option value="100">Tam Burs (%100)</option>
+      <label for="academicProgram">Akademik Program</label>
+      <select id="academicProgram" title="Akademik programınızı seçin">
+        <option value="">Seçiniz...</option>
       </select>
 
       <div class="buttons">
         <button class="btn btn-secondary" onclick="prevStep()">Geri</button>
-        <button class="btn btn-primary" onclick="nextStep()">Devam Et</button>
+        <button class="btn btn-primary" onclick="nextStep()" id="step3-next" disabled>Devam Et</button>
       </div>
     </div>
 
-    <!-- Step 4: Additional Services -->
+    <!-- Step 4: Admit Year -->
     <div class="step" id="step-4">
-      <div class="step-indicator">Adım 4 / 5</div>
-      <h2>Ek Hizmetler</h2>
-      <p>Aşağıdaki ek hizmetlerden hangilerini almak istiyorsunuz?</p>
+      <div class="step-indicator">Adım 4 / 7</div>
+      <h2>Kabul Yılınız</h2>
+      <p>Hangi yıl kabul edildiniz?</p>
       
-      <div class="service-options">
-        <div class="service-card" onclick="toggleService('yurt')" id="service-yurt">
-          <h3>🏠 Yurt Hizmeti</h3>
-          <p>Kampüs içi konaklama imkanı</p>
-          <div class="service-price">50.000 TL</div>
-        </div>
-        
-        <div class="service-card" onclick="toggleService('yemek')" id="service-yemek">
-          <h3>🍽️ Yemek Planı</h3>
-          <p>Kampüs yemekhanesi yıllık paketi</p>
-          <div class="service-price">30.000 TL</div>
-        </div>
-      </div>
+      <label for="admitYear">Kabul Yılı</label>
+      <select id="admitYear" title="Kabul yılınızı seçin">
+        <option value="">Seçiniz...</option>
+      </select>
 
       <div class="buttons">
         <button class="btn btn-secondary" onclick="prevStep()">Geri</button>
-        <button class="btn btn-primary" onclick="nextStep()">Sonucu Gör</button>
+        <button class="btn btn-primary" onclick="nextStep()" id="step4-next" disabled>Devam Et</button>
       </div>
     </div>
 
-    <!-- Step 5: Results -->
+    <!-- Step 5: LYS Scholarship -->
     <div class="step" id="step-5">
-      <div class="step-indicator">Adım 5 / 5</div>
+      <div class="step-indicator">Adım 5 / 7</div>
+      <h2>LYS Burs Durumunuz</h2>
+      <p>LYS burs durumunuzu seçin.</p>
+      
+      <label for="lysScholarship">LYS Bursu</label>
+      <select id="lysScholarship" title="LYS burs durumunuzu seçin">
+        <option value="">Seçiniz...</option>
+      </select>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="prevStep()">Geri</button>
+        <button class="btn btn-primary" onclick="nextStep()" id="step5-next" disabled>Devam Et</button>
+      </div>
+    </div>
+
+    <!-- Step 6: Additional Options -->
+    <div class="step" id="step-6">
+      <div class="step-indicator">Adım 6 / 7</div>
+      <h2>Ek Seçenekler</h2>
+      <p>Diğer seçeneklerinizi belirtin.</p>
+      
+      <label for="waivers">Muafiyetler</label>
+      <select id="waivers" title="Muafiyet durumunuzu seçin">
+        <option value="">Seçiniz...</option>
+      </select>
+
+      <label for="siblingDiscount">Kardeş İndirimi</label>
+      <select id="siblingDiscount" title="Kardeş indirimi durumunuzu seçin">
+        <option value="">Seçiniz...</option>
+      </select>
+
+      <label for="paymentMethods">Ödeme Yöntemi</label>
+      <select id="paymentMethods" title="Ödeme yönteminizi seçin">
+        <option value="">Seçiniz...</option>
+      </select>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="prevStep()">Geri</button>
+        <button class="btn btn-primary" onclick="nextStep()" id="step6-next" disabled>Sonucu Gör</button>
+      </div>
+    </div>
+
+    <!-- Step 7: Results -->
+    <div class="step" id="step-7">
+      <div class="step-indicator">Adım 7 / 7</div>
       <h2>🎉 Ücret Hesaplama Sonucu</h2>
       <p>İşte 2025 Güz dönemi için toplam ücretiniz:</p>
       
@@ -317,88 +349,119 @@
 
   <script>
     // Global variables to store loaded data
-    let feeData = {};
-    let addonPrices = {};
-    let scholarshipOptions = [];
+    let tuitionData = [];
     let currentStep = 1;
-    const selectedServices = new Set();
+    const maxSteps = 7;
+    
+    // Google Apps Script URL
+    const DATA_URL = 'https://script.google.com/macros/s/AKfycbxM7dwSmcODD8yyBr4W-ne3-jcMfXWmz_ee7_YWC9BTJfKa0UYpUZBkMzrPHdtp-JzU/exec';
 
-    // Load fee data from JSON file
-    async function loadFeeData() {
+    // Load tuition data from Google Apps Script
+    async function loadTuitionData() {
       try {
-        const response = await fetch('fees.json');
-        const data = await response.json();
+        const response = await fetch(DATA_URL);
+        tuitionData = await response.json();
+        console.log('Tuition data loaded successfully:', tuitionData);
         
-        // Convert fee structure to the format expected by the existing code
-        Object.keys(data.fee_structure).forEach(type => {
-          feeData[type] = {};
-          Object.keys(data.fee_structure[type].years).forEach(year => {
-            feeData[type][year] = data.fee_structure[type].years[year].base_fee;
-          });
-        });
-        
-        // Load additional services prices
-        Object.keys(data.additional_services).forEach(service => {
-          addonPrices[service] = data.additional_services[service].price;
-        });
-        
-        // Load scholarship options
-        scholarshipOptions = data.scholarship_options;
-        
-        // Populate scholarship dropdown with loaded data
-        populateScholarshipOptions();
-        
-        console.log('Fee data loaded successfully');
+        // Populate initial dropdown
+        populateDropdowns();
       } catch (error) {
-        console.error('Error loading fee data:', error);
-        // Fallback to hardcoded data if JSON fails to load
-        loadFallbackData();
+        console.error('Error loading tuition data:', error);
+        alert('Veri yüklenirken hata oluştu. Lütfen sayfayı yenileyin.');
       }
     }
 
-    // Fallback data in case JSON loading fails
-    function loadFallbackData() {
-      feeData = {
-        lys: {
-          2015: 430000, 2016: 480000, 2017: 502500, 2018: 535000
-        },
-        ua: {
-          2019: 622500, 2020: 632500, 2021: 657500,
-          2022: 712500, 2023: 765000, 2024: 837500
-        }
-      };
-
-      addonPrices = {
-        yurt: 50000,
-        yemek: 30000
-      };
+    // Get unique values for a specific field from the data
+    function getUniqueValues(field) {
+      const values = tuitionData
+        .map(item => item[field])
+        .filter(value => value && value !== "")
+        .filter((value, index, array) => array.indexOf(value) === index)
+        .sort();
+      return values;
     }
 
-    // Populate scholarship dropdown with data from JSON
-    function populateScholarshipOptions() {
-      const scholarshipSelect = document.getElementById('scholarship');
-      scholarshipSelect.innerHTML = '';
-      
-      scholarshipOptions.forEach(option => {
-        const optElement = document.createElement('option');
-        optElement.value = option.value;
-        optElement.textContent = option.label;
-        optElement.title = option.description;
-        scholarshipSelect.appendChild(optElement);
+    // Filter data based on current selections
+    function getFilteredData() {
+      let filtered = tuitionData.filter(item => {
+        // Only return items that have all required fields
+        return item.Admit_Type && item.Turkish_Citizen && item.Academic_Program && 
+               item.Admit_Year && item.LYS_Scholarship && item.Waivers && 
+               item.Sibling_Discount && item.Payment_Methods && item.Tuition_Fee;
       });
+
+      // Apply filters based on current selections
+      const admitType = document.getElementById('admitType').value;
+      const turkishCitizen = document.getElementById('turkishCitizen').value;
+      const academicProgram = document.getElementById('academicProgram').value;
+      const admitYear = document.getElementById('admitYear').value;
+      const lysScholarship = document.getElementById('lysScholarship').value;
+
+      if (admitType) filtered = filtered.filter(item => item.Admit_Type === admitType);
+      if (turkishCitizen) filtered = filtered.filter(item => item.Turkish_Citizen === turkishCitizen);
+      if (academicProgram) filtered = filtered.filter(item => item.Academic_Program === academicProgram);
+      if (admitYear) filtered = filtered.filter(item => item.Admit_Year == admitYear);
+      if (lysScholarship) filtered = filtered.filter(item => item.LYS_Scholarship === lysScholarship);
+
+      return filtered;
+    }
+
+    // Populate dropdowns based on current data
+    function populateDropdowns() {
+      populateDropdown('admitType', 'Admit_Type');
+      updateDependentDropdowns();
+    }
+
+    // Populate a specific dropdown
+    function populateDropdown(elementId, field, filtered = null) {
+      const select = document.getElementById(elementId);
+      const currentValue = select.value;
+      
+      // Clear current options except the first one
+      select.innerHTML = '<option value="">Seçiniz...</option>';
+      
+      const data = filtered || tuitionData;
+      const values = data
+        .map(item => item[field])
+        .filter(value => value && value !== "")
+        .filter((value, index, array) => array.indexOf(value) === index)
+        .sort();
+
+      values.forEach(value => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value;
+        if (value === currentValue) option.selected = true;
+        select.appendChild(option);
+      });
+    }
+
+    // Update dependent dropdowns based on current selections
+    function updateDependentDropdowns() {
+      const filtered = getFilteredData();
+      
+      if (currentStep >= 2) populateDropdown('turkishCitizen', 'Turkish_Citizen', getFilteredData());
+      if (currentStep >= 3) populateDropdown('academicProgram', 'Academic_Program', getFilteredData());
+      if (currentStep >= 4) populateDropdown('admitYear', 'Admit_Year', getFilteredData());
+      if (currentStep >= 5) populateDropdown('lysScholarship', 'LYS_Scholarship', getFilteredData());
+      if (currentStep >= 6) {
+        populateDropdown('waivers', 'Waivers', getFilteredData());
+        populateDropdown('siblingDiscount', 'Sibling_Discount', getFilteredData());
+        populateDropdown('paymentMethods', 'Payment_Methods', getFilteredData());
+      }
     }
 
     // Step navigation functions
     function nextStep() {
-      if (currentStep < 5) {
+      if (currentStep < maxSteps) {
         document.getElementById(`step-${currentStep}`).classList.remove('active');
         document.getElementById(`progress-${currentStep}`).classList.add('active');
         currentStep++;
         document.getElementById(`step-${currentStep}`).classList.add('active');
         
-        if (currentStep === 2) {
-          updateYearOptions();
-        } else if (currentStep === 5) {
+        if (currentStep < maxSteps) {
+          updateDependentDropdowns();
+        } else if (currentStep === maxSteps) {
           displayResults();
         }
       }
@@ -423,133 +486,157 @@
       document.getElementById('progress-1').classList.add('active');
       
       // Reset form values
-      document.getElementById('studentType').value = '';
-      document.getElementById('entryYear').value = '';
-      document.getElementById('scholarship').value = '0';
-      selectedServices.clear();
-      
-      // Reset service cards
-      document.querySelectorAll('.service-card').forEach(card => {
-        card.classList.remove('selected');
-      });
+      document.getElementById('admitType').value = '';
+      document.getElementById('turkishCitizen').value = '';
+      document.getElementById('academicProgram').value = '';
+      document.getElementById('admitYear').value = '';
+      document.getElementById('lysScholarship').value = '';
+      document.getElementById('waivers').value = '';
+      document.getElementById('siblingDiscount').value = '';
+      document.getElementById('paymentMethods').value = '';
       
       // Reset buttons
-      document.getElementById('step1-next').disabled = true;
-      document.getElementById('step2-next').disabled = true;
-    }
-
-    // Populate years dropdown dynamically
-    function updateYearOptions() {
-      const type = document.getElementById('studentType').value;
-      const yearSelect = document.getElementById('entryYear');
-      yearSelect.innerHTML = '<option value="">Seçiniz...</option>';
+      updateStepButtons();
       
-      if (type && feeData[type]) {
-        Object.keys(feeData[type]).forEach(year => {
-          const opt = document.createElement('option');
-          opt.value = year;
-          opt.textContent = year;
-          yearSelect.appendChild(opt);
-        });
-      }
+      // Repopulate dropdowns
+      populateDropdowns();
     }
 
-    // Toggle service selection
-    function toggleService(serviceType) {
-      const card = document.getElementById(`service-${serviceType}`);
-      if (selectedServices.has(serviceType)) {
-        selectedServices.delete(serviceType);
-        card.classList.remove('selected');
-      } else {
-        selectedServices.add(serviceType);
-        card.classList.add('selected');
-      }
+    // Update step buttons based on current selections
+    function updateStepButtons() {
+      const buttons = [
+        { step: 1, element: 'step1-next', field: 'admitType' },
+        { step: 2, element: 'step2-next', field: 'turkishCitizen' },
+        { step: 3, element: 'step3-next', field: 'academicProgram' },
+        { step: 4, element: 'step4-next', field: 'admitYear' },
+        { step: 5, element: 'step5-next', field: 'lysScholarship' },
+        { step: 6, element: 'step6-next', fields: ['waivers', 'siblingDiscount', 'paymentMethods'] }
+      ];
+
+      buttons.forEach(button => {
+        const buttonElement = document.getElementById(button.element);
+        if (buttonElement) {
+          if (button.fields) {
+            // Multiple fields required
+            const allSelected = button.fields.every(field => 
+              document.getElementById(field).value !== ''
+            );
+            buttonElement.disabled = !allSelected;
+          } else {
+            // Single field required
+            const selected = document.getElementById(button.field).value !== '';
+            buttonElement.disabled = !selected;
+          }
+        }
+      });
     }
 
     // Display final results
     function displayResults() {
-      const type = document.getElementById('studentType').value;
-      const year = document.getElementById('entryYear').value;
-      const scholarship = parseFloat(document.getElementById('scholarship').value || 0);
-      
-      let baseFee = feeData[type][year] || 0;
-      const originalFee = baseFee;
-      const scholarshipAmount = baseFee * (scholarship / 100);
-      baseFee = baseFee - scholarshipAmount;
+      const selections = {
+        admitType: document.getElementById('admitType').value,
+        turkishCitizen: document.getElementById('turkishCitizen').value,
+        academicProgram: document.getElementById('academicProgram').value,
+        admitYear: document.getElementById('admitYear').value,
+        lysScholarship: document.getElementById('lysScholarship').value,
+        waivers: document.getElementById('waivers').value,
+        siblingDiscount: document.getElementById('siblingDiscount').value,
+        paymentMethods: document.getElementById('paymentMethods').value
+      };
 
-      let addonsTotal = 0;
-      const selectedAddonsList = [];
-      
-      selectedServices.forEach(service => {
-        if (addonPrices[service]) {
-          addonsTotal += addonPrices[service];
-          const serviceName = service === 'yurt' ? 'Yurt Hizmeti' : 'Yemek Planı';
-          selectedAddonsList.push({
-            name: serviceName,
-            price: addonPrices[service]
-          });
-        }
-      });
+      // Find matching tuition data
+      const matchingData = tuitionData.find(item => 
+        item.Admit_Type === selections.admitType &&
+        item.Turkish_Citizen === selections.turkishCitizen &&
+        item.Academic_Program === selections.academicProgram &&
+        item.Admit_Year == selections.admitYear &&
+        item.LYS_Scholarship === selections.lysScholarship &&
+        item.Waivers === selections.waivers &&
+        item.Sibling_Discount === selections.siblingDiscount &&
+        item.Payment_Methods === selections.paymentMethods
+      );
 
-      const total = baseFee + addonsTotal;
+      let resultsHTML = '';
       
-      // Create results HTML
-      let resultsHTML = `
-        <div class="result-item">
-          <span>Temel Eğitim Ücreti (${year}):</span>
-          <span>${originalFee.toLocaleString('tr-TR')} TL</span>
-        </div>
-      `;
-      
-      if (scholarship > 0) {
-        resultsHTML += `
+      if (matchingData) {
+        const tuitionFee = matchingData.Tuition_Fee;
+        const currency = matchingData.Currency;
+        const currencySymbol = currency === 'Turkish Lira' ? 'TL' : 
+                              currency === 'US Dollar' ? 'USD' : currency;
+
+        resultsHTML = `
           <div class="result-item">
-            <span>Burs İndirimi (%${scholarship}):</span>
-            <span>-${scholarshipAmount.toLocaleString('tr-TR')} TL</span>
+            <span>Kabul Tipi:</span>
+            <span>${selections.admitType}</span>
           </div>
           <div class="result-item">
-            <span>İndirimli Eğitim Ücreti:</span>
-            <span>${baseFee.toLocaleString('tr-TR')} TL</span>
+            <span>Vatandaşlık:</span>
+            <span>${selections.turkishCitizen}</span>
+          </div>
+          <div class="result-item">
+            <span>Akademik Program:</span>
+            <span>${selections.academicProgram}</span>
+          </div>
+          <div class="result-item">
+            <span>Kabul Yılı:</span>
+            <span>${selections.admitYear}</span>
+          </div>
+          <div class="result-item">
+            <span>LYS Bursu:</span>
+            <span>${selections.lysScholarship}</span>
+          </div>
+          <div class="result-item">
+            <span>Muafiyetler:</span>
+            <span>${selections.waivers}</span>
+          </div>
+          <div class="result-item">
+            <span>Kardeş İndirimi:</span>
+            <span>${selections.siblingDiscount}</span>
+          </div>
+          <div class="result-item">
+            <span>Ödeme Yöntemi:</span>
+            <span>${selections.paymentMethods}</span>
+          </div>
+          <div class="result-item">
+            <span>TOPLAM EĞİTİM ÜCRETİ:</span>
+            <span>${tuitionFee.toLocaleString()} ${currencySymbol}</span>
+          </div>
+        `;
+      } else {
+        resultsHTML = `
+          <div class="result-item">
+            <span>Uyarı:</span>
+            <span>Seçimlerinize uygun ücret bilgisi bulunamadı.</span>
           </div>
         `;
       }
       
-      selectedAddonsList.forEach(addon => {
-        resultsHTML += `
-          <div class="result-item">
-            <span>${addon.name}:</span>
-            <span>+${addon.price.toLocaleString('tr-TR')} TL</span>
-          </div>
-        `;
-      });
-      
-      resultsHTML += `
-        <div class="result-item">
-          <span>TOPLAM ÜCRET:</span>
-          <span>${total.toLocaleString('tr-TR')} TL</span>
-        </div>
-      `;
-      
       document.getElementById('resultSummary').innerHTML = resultsHTML;
     }
 
-    // Event listeners for form validation
-    document.getElementById('studentType').addEventListener('change', function() {
-      document.getElementById('step1-next').disabled = !this.value;
-    });
+    // Event listeners for form validation and dependent updates
+    function setupEventListeners() {
+      const fields = [
+        'admitType', 'turkishCitizen', 'academicProgram', 'admitYear', 
+        'lysScholarship', 'waivers', 'siblingDiscount', 'paymentMethods'
+      ];
 
-    document.getElementById('entryYear').addEventListener('change', function() {
-      document.getElementById('step2-next').disabled = !this.value;
-    });
+      fields.forEach(fieldId => {
+        const element = document.getElementById(fieldId);
+        if (element) {
+          element.addEventListener('change', function() {
+            updateDependentDropdowns();
+            updateStepButtons();
+          });
+        }
+      });
+    }
 
     // Initialize the wizard
     document.addEventListener('DOMContentLoaded', function() {
-      // Load fee data first
-      loadFeeData().then(() => {
-        // Set initial state after data is loaded
-        currentStep = 1;
-        document.getElementById('step1-next').disabled = true;
-        document.getElementById('step2-next').disabled = true;
+      loadTuitionData().then(() => {
+        setupEventListeners();
+        updateStepButtons();
       });
     });
   </script>
