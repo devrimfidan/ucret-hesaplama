@@ -1,7 +1,7 @@
 {
   "tr": {
     "page": {
-      "title": "Ücret Simülatörü",
+      "title": "Ücret Hesaplama",
       "stepCounter": "Adım {current} / {total}"
     },
     "steps": {
