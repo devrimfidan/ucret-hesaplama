@@ -1,12 +1,12 @@
 [
   {
-    "Admit_Type": "LYS",
-    "Turkish_Citizen": "Yes",
-    "Academic_Program": "Other",
     "Admit_Year": 2025,
+    "Academic_Program": "Other",
+    "Admit_Type": "LYS",
     "LYS_Scholarship": "None",
     "Waivers": "None",
     "Sibling_Discount": "No",
+    "Turkish_Citizen": "Yes",
     "Payment_Methods": "Single Payment",
     "Tuition_Fee": 1565000,
     "Tuition_Fall": "NA",
@@ -14,13 +14,13 @@
     "Currency": "Turkish Lira"
   },
   {
-    "Admit_Type": "LYS",
-    "Turkish_Citizen": "Yes",
-    "Academic_Program": "School of Medicine",
     "Admit_Year": 2025,
+    "Academic_Program": "School of Medicine",
+    "Admit_Type": "LYS",
     "LYS_Scholarship": "None",
     "Waivers": "None",
     "Sibling_Discount": "No",
+    "Turkish_Citizen": "Yes",
     "Payment_Methods": "Single Payment",
     "Tuition_Fee": 2330000,
     "Tuition_Fall": "NA",
@@ -28,17 +28,31 @@
     "Currency": "Turkish Lira"
   },
   {
-    "Admit_Type": "",
-    "Turkish_Citizen": "",
-    "Academic_Program": "",
-    "Admit_Year": "",
-    "LYS_Scholarship": "",
-    "Waivers": "",
-    "Sibling_Discount": "",
-    "Payment_Methods": "",
+    "Admit_Year": 2025,
+    "Academic_Program": "Other",
+    "Admit_Type": "International",
+    "LYS_Scholarship": "None",
+    "Waivers": "None",
+    "Sibling_Discount": "No",
+    "Turkish_Citizen": "No",
+    "Payment_Methods": "Single Payment",
     "Tuition_Fee": 28000,
     "Tuition_Fall": "NA",
     "Tuition_Spring": "NA",
     "Currency": "US Dollar"
+  },
+  {
+    "Admit_Year": 2025,
+    "Academic_Program": "Engineering",
+    "Admit_Type": "LYS",
+    "LYS_Scholarship": "25%",
+    "Waivers": "None",
+    "Sibling_Discount": "No",
+    "Turkish_Citizen": "Yes",
+    "Payment_Methods": "Installment",
+    "Tuition_Fee": 1200000,
+    "Tuition_Fall": 600000,
+    "Tuition_Spring": 600000,
+    "Currency": "Turkish Lira"
   }
 ]
