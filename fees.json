@@ -1,0 +1,106 @@
+{
+  "academic_year": "2025-2026",
+  "currency": "TL",
+  "last_updated": "2025-07-11",
+  "fee_structure": {
+    "lys": {
+      "name": "LYS ile Yerleşen",
+      "description": "Liselerde yapılan yerleştirme sınavı ile üniversiteye yerleşen öğrenciler",
+      "years": {
+        "2015": {
+          "base_fee": 430000,
+          "description": "2015 yılında LYS ile yerleşen öğrenciler için yıllık eğitim ücreti"
+        },
+        "2016": {
+          "base_fee": 480000,
+          "description": "2016 yılında LYS ile yerleşen öğrenciler için yıllık eğitim ücreti"
+        },
+        "2017": {
+          "base_fee": 502500,
+          "description": "2017 yılında LYS ile yerleşen öğrenciler için yıllık eğitim ücreti"
+        },
+        "2018": {
+          "base_fee": 535000,
+          "description": "2018 yılında LYS ile yerleşen öğrenciler için yıllık eğitim ücreti"
+        }
+      }
+    },
+    "ua": {
+      "name": "Uluslararası/Transfer",
+      "description": "Uluslararası öğrenciler ve transfer öğrenciler",
+      "years": {
+        "2019": {
+          "base_fee": 622500,
+          "description": "2019 yılında başlayan uluslararası/transfer öğrenciler için yıllık eğitim ücreti"
+        },
+        "2020": {
+          "base_fee": 632500,
+          "description": "2020 yılında başlayan uluslararası/transfer öğrenciler için yıllık eğitim ücreti"
+        },
+        "2021": {
+          "base_fee": 657500,
+          "description": "2021 yılında başlayan uluslararası/transfer öğrenciler için yıllık eğitim ücreti"
+        },
+        "2022": {
+          "base_fee": 712500,
+          "description": "2022 yılında başlayan uluslararası/transfer öğrenciler için yıllık eğitim ücreti"
+        },
+        "2023": {
+          "base_fee": 765000,
+          "description": "2023 yılında başlayan uluslararası/transfer öğrenciler için yıllık eğitim ücreti"
+        },
+        "2024": {
+          "base_fee": 837500,
+          "description": "2024 yılında başlayan uluslararası/transfer öğrenciler için yıllık eğitim ücreti"
+        }
+      }
+    }
+  },
+  "scholarship_options": [
+    { "value": 0, "label": "Bursuz (%0)", "description": "Hiç burs almayan öğrenciler" },
+    { "value": 10, "label": "%10 Burs", "description": "Eğitim ücretinin %10'u kadar burs" },
+    { "value": 20, "label": "%20 Burs", "description": "Eğitim ücretinin %20'si kadar burs" },
+    { "value": 25, "label": "%25 Burs", "description": "Eğitim ücretinin %25'i kadar burs" },
+    { "value": 30, "label": "%30 Burs", "description": "Eğitim ücretinin %30'u kadar burs" },
+    { "value": 40, "label": "%40 Burs", "description": "Eğitim ücretinin %40'ı kadar burs" },
+    { "value": 50, "label": "%50 Burs", "description": "Eğitim ücretinin yarısı kadar burs" },
+    { "value": 60, "label": "%60 Burs", "description": "Eğitim ücretinin %60'ı kadar burs" },
+    { "value": 70, "label": "%70 Burs", "description": "Eğitim ücretinin %70'i kadar burs" },
+    { "value": 75, "label": "%75 Burs", "description": "Eğitim ücretinin %75'i kadar burs" },
+    { "value": 80, "label": "%80 Burs", "description": "Eğitim ücretinin %80'i kadar burs" },
+    { "value": 90, "label": "%90 Burs", "description": "Eğitim ücretinin %90'ı kadar burs" },
+    { "value": 100, "label": "Tam Burs (%100)", "description": "Eğitim ücreti tamamen karşılanıyor" }
+  ],
+  "additional_services": {
+    "yurt": {
+      "name": "Yurt Hizmeti",
+      "description": "Kampüs içi konaklama imkanı - tek kişilik oda, ortak banyo ve çalışma alanları",
+      "price": 50000,
+      "features": [
+        "Tek kişilik oda",
+        "Ortak banyo",
+        "Çalışma alanları",
+        "Güvenlik",
+        "Temizlik hizmeti"
+      ]
+    },
+    "yemek": {
+      "name": "Yemek Planı",
+      "description": "Kampüs yemekhanesi yıllık paketi - günde 3 öğün ana yemek",
+      "price": 30000,
+      "features": [
+        "Kahvaltı",
+        "Öğle yemeği",
+        "Akşam yemeği",
+        "Çeşitli menü seçenekleri",
+        "Sağlıklı beslenme"
+      ]
+    }
+  },
+  "calculation_rules": {
+    "base_fee_calculation": "Öğrenci tipine ve giriş yılına göre belirlenen temel eğitim ücreti",
+    "scholarship_calculation": "Temel ücret × (Burs oranı / 100) = Burs miktarı. İndirimli ücret = Temel ücret - Burs miktarı",
+    "additional_services_calculation": "Seçilen her ek hizmetin fiyatı toplam ücrете eklenir",
+    "total_calculation": "Toplam Ücret = İndirimli Eğitim Ücreti + Ek Hizmetler Toplamı"
+  }
+}

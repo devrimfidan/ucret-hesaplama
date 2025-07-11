@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ücret Simülatörü - Adım Adım</title>
   <style>
     body { 
@@ -172,12 +173,30 @@
       margin-bottom: 20px;
       color: #6c757d;
     }
+    .logic-link {
+      color: white;
+      text-decoration: none;
+      background: rgba(255,255,255,0.2);
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-top: 15px;
+      display: inline-block;
+    }
+    .logic-link:hover {
+      background: rgba(255,255,255,0.3);
+    }
   </style>
 </head>
 <body>
   <div class="wizard-container">
     <div class="wizard-header">
       <h1>2025 Güz Ücret Simülatörü</h1>
+      <div>
+        <a href="logic.html" class="logic-link">
+          📊 Hesaplama Mantığını İncele
+        </a>
+      </div>
     </div>
     
     <div class="progress-bar">
@@ -194,8 +213,8 @@
       <h2>Öğrenci Tipinizi Seçin</h2>
       <p>Lütfen hangi kategoride öğrenci olduğunuzu belirtin.</p>
       
-      <label>Öğrenci Tipi</label>
-      <select id="studentType">
+      <label for="studentType">Öğrenci Tipi</label>
+      <select id="studentType" title="Öğrenci tipinizi seçin">
         <option value="">Seçiniz...</option>
         <option value="lys">LYS ile Yerleşen</option>
         <option value="ua">Uluslararası/Transfer</option>
@@ -213,8 +232,8 @@
       <h2>Giriş Yılınızı Seçin</h2>
       <p>Üniversiteye hangi yıl girdiniz?</p>
       
-      <label>Giriş Yılı</label>
-      <select id="entryYear">
+      <label for="entryYear">Giriş Yılı</label>
+      <select id="entryYear" title="Giriş yılınızı seçin">
         <option value="">Seçiniz...</option>
       </select>
 
@@ -230,8 +249,8 @@
       <h2>Burs Durumunuz</h2>
       <p>Eğer bursunuz varsa, burs oranınızı seçin.</p>
       
-      <label>Burs Oranı</label>
-      <select id="scholarship">
+      <label for="scholarship">Burs Oranı</label>
+      <select id="scholarship" title="Burs oranınızı seçin">
         <option value="0">Bursuz (%0)</option>
         <option value="10">%10 Burs</option>
         <option value="20">%20 Burs</option>
@@ -297,23 +316,77 @@
   </div>
 
   <script>
-    const feeData = {
-      lys: {
-        2015: 430000, 2016: 480000, 2017: 502500, 2018: 535000
-      },
-      ua: {
-        2019: 622500, 2020: 632500, 2021: 657500,
-        2022: 712500, 2023: 765000, 2024: 837500
-      }
-    };
-
-    const addonPrices = {
-      yurt: 50000,
-      yemek: 30000
-    };
-
+    // Global variables to store loaded data
+    let feeData = {};
+    let addonPrices = {};
+    let scholarshipOptions = [];
     let currentStep = 1;
     const selectedServices = new Set();
+
+    // Load fee data from JSON file
+    async function loadFeeData() {
+      try {
+        const response = await fetch('fees.json');
+        const data = await response.json();
+        
+        // Convert fee structure to the format expected by the existing code
+        Object.keys(data.fee_structure).forEach(type => {
+          feeData[type] = {};
+          Object.keys(data.fee_structure[type].years).forEach(year => {
+            feeData[type][year] = data.fee_structure[type].years[year].base_fee;
+          });
+        });
+        
+        // Load additional services prices
+        Object.keys(data.additional_services).forEach(service => {
+          addonPrices[service] = data.additional_services[service].price;
+        });
+        
+        // Load scholarship options
+        scholarshipOptions = data.scholarship_options;
+        
+        // Populate scholarship dropdown with loaded data
+        populateScholarshipOptions();
+        
+        console.log('Fee data loaded successfully');
+      } catch (error) {
+        console.error('Error loading fee data:', error);
+        // Fallback to hardcoded data if JSON fails to load
+        loadFallbackData();
+      }
+    }
+
+    // Fallback data in case JSON loading fails
+    function loadFallbackData() {
+      feeData = {
+        lys: {
+          2015: 430000, 2016: 480000, 2017: 502500, 2018: 535000
+        },
+        ua: {
+          2019: 622500, 2020: 632500, 2021: 657500,
+          2022: 712500, 2023: 765000, 2024: 837500
+        }
+      };
+
+      addonPrices = {
+        yurt: 50000,
+        yemek: 30000
+      };
+    }
+
+    // Populate scholarship dropdown with data from JSON
+    function populateScholarshipOptions() {
+      const scholarshipSelect = document.getElementById('scholarship');
+      scholarshipSelect.innerHTML = '';
+      
+      scholarshipOptions.forEach(option => {
+        const optElement = document.createElement('option');
+        optElement.value = option.value;
+        optElement.textContent = option.label;
+        optElement.title = option.description;
+        scholarshipSelect.appendChild(optElement);
+      });
+    }
 
     // Step navigation functions
     function nextStep() {
@@ -471,10 +544,13 @@
 
     // Initialize the wizard
     document.addEventListener('DOMContentLoaded', function() {
-      // Set initial state
-      currentStep = 1;
-      document.getElementById('step1-next').disabled = true;
-      document.getElementById('step2-next').disabled = true;
+      // Load fee data first
+      loadFeeData().then(() => {
+        // Set initial state after data is loaded
+        currentStep = 1;
+        document.getElementById('step1-next').disabled = true;
+        document.getElementById('step2-next').disabled = true;
+      });
     });
   </script>
 
