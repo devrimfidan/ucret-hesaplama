@@ -36,34 +36,38 @@
     }
     .header-center {
       flex: 1;
-      text-align: center;
     }
     .header-right {
       display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .header-controls {
+      display: flex;
       align-items: center;
+      gap: 12px;
     }
     .wizard-header h1 {
       margin: 0;
-      font-size: 24px;
-      font-weight: 300;
+      font-size: 18px;
+      font-weight: 400;
+      text-align: right;
     }
     .university-logo {
-      width: 180px;
+      width: 200px;
       height: auto;
     }
     .step-counter {
       background: rgba(255,255,255,0.2);
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 15px;
+      font-size: 12px;
       font-weight: 600;
       white-space: nowrap;
     }
     .progress-bar {
-      display: flex;
-      background: #e9ecef;
-      height: 4px;
-      margin: 0;
+      display: none; /* Hide progress bar */
     }
     .progress-step {
       flex: 1;
@@ -85,27 +89,71 @@
       color: #495057;
       margin-bottom: 20px;
       font-size: 24px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .step-instruction {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin: 0;
+    }
+    .language-switcher {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .language-switcher:hover {
+      background: rgba(255,255,255,0.3);
+      border-color: rgba(255,255,255,0.5);
+    }
+    .disclaimer {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      font-size: 11px;
+      color: #6c757d;
+      background: rgba(255,255,255,0.9);
+      padding: 8px 12px;
+      border-radius: 6px;
+      max-width: 280px;
+      line-height: 1.3;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
     }
     .step p {
       color: #6c757d;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       font-size: 16px;
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #495057;
     }
     select {
       width: 100%;
-      padding: 12px;
+      padding: 16px;
       border: 2px solid #e9ecef;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 18px;
       background: white;
       transition: border-color 0.3s;
       margin-bottom: 20px;
+      min-height: 56px;
+    }
+    select option {
+      padding: 12px;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    select option:first-child {
+      font-weight: 600;
+      color: #6c757d;
+      font-style: italic;
     }
     select:focus {
       outline: none;
@@ -276,13 +324,18 @@
   <div class="wizard-container">
     <div class="wizard-header">
       <div class="header-left">
-        <img src="https://identity.hub.ku.edu.tr/resources/pvan7/login/kuhub/img/ku-logo.png" alt="Koç Üniversitesi Logo" class="university-logo">
+        <a href="index.html">
+          <img src="https://identity.hub.ku.edu.tr/resources/pvan7/login/kuhub/img/ku-logo.png" alt="Koç Üniversitesi Logo" class="university-logo">
+        </a>
       </div>
       <div class="header-center">
-        <h1>Ücret Simülatörü</h1>
+        <!-- Empty center for spacing -->
       </div>
       <div class="header-right">
-        <div class="step-counter" id="step-counter">Adım 1 / 3</div>
+        <h1>Ücret Simülatörü</h1>
+        <div class="header-controls">
+          <div class="step-counter" id="step-counter">Adım 1 / 3</div>
+        </div>
       </div>
     </div>
     
@@ -295,8 +348,7 @@
     <!-- Step 1: Basic Information -->
     <div class="step active" id="step-1">
       <div class="step-indicator">Adım 1 / 3</div>
-      <h2>Temel Bilgiler</h2>
-      <p>Lütfen temel bilgilerinizi seçin.</p>
+      <h2>Temel Bilgiler <span class="step-instruction">Lütfen temel bilgilerinizi seçin.</span></h2>
       
       <div id="loading-indicator" class="loading-indicator">
         <div class="loading-spinner"></div>
@@ -310,31 +362,28 @@
             <div class="troubleshooting-content">
               <p><strong>Dosya yükleme hatası alıyorsanız:</strong></p>
               <ol>
-                <li>fees.json dosyasının index.html ile aynı klasörde olduğunu kontrol edin</li>
+                <li>fees.json dosyasının assets klasöründe olduğunu kontrol edin</li>
                 <li>Dosyayı doğrudan tarayıcıda açmak yerine web sunucusu kullanın</li>
                 <li>Live Server uzantısını kullanarak localhost üzerinden çalıştırın</li>
                 <li>JSON dosyasının geçerli format olduğunu kontrol edin</li>
                 <li>Dosya izinlerini kontrol edin</li>
               </ol>
               <p><strong>Kullanılan dosya:</strong><br>
-              <code>./fees.json</code></p>
+              <code>./assets/fees.json</code></p>
             </div>
           </details>
         </div>
       </div>
       
       <div id="form-content" class="form-content-hidden">
-        <label for="admitYear">Kabul Yılı</label>
         <select id="admitYear" title="Kabul yılınızı seçin">
           <option value="">Seçiniz...</option>
         </select>
 
-        <label for="academicProgram">Akademik Program</label>
         <select id="academicProgram" title="Akademik programınızı seçin">
           <option value="">Seçiniz...</option>
         </select>
 
-        <label for="admitType">Kabul Tipi</label>
         <select id="admitType" title="Kabul tipinizi seçin">
           <option value="">Seçiniz...</option>
         </select>
@@ -349,22 +398,18 @@
     <!-- Step 2: Additional Options -->
     <div class="step" id="step-2">
       <div class="step-indicator">Adım 2 / 3</div>
-      <h2>Ek Seçenekler</h2>
-      <p>Burs ve indirim durumunuzu belirtin.</p>
+      <h2>Ek Seçenekler <span class="step-instruction">Burs ve indirim durumunuzu belirtin.</span></h2>
       
       <div id="lys-scholarship-section" class="hidden">
-        <label for="lysScholarship">LYS Bursu</label>
         <select id="lysScholarship" title="LYS burs durumunuzu seçin">
           <option value="">Seçiniz...</option>
         </select>
       </div>
 
-      <label for="waivers">Muafiyetler</label>
       <select id="waivers" title="Muafiyet durumunuzu seçin">
         <option value="">Seçiniz...</option>
       </select>
 
-      <label for="siblingDiscount">Kardeş İndirimi</label>
       <select id="siblingDiscount" title="Kardeş indirimi durumunuzu seçin">
         <option value="">Seçiniz...</option>
       </select>
@@ -378,15 +423,12 @@
     <!-- Step 3: Final Details and Results -->
     <div class="step" id="step-3">
       <div class="step-indicator">Adım 3 / 3</div>
-      <h2>Son Detaylar</h2>
-      <p>Vatandaşlık ve ödeme bilgilerinizi tamamlayın.</p>
+      <h2>Son Detaylar <span class="step-instruction">Vatandaşlık ve ödeme bilgilerinizi tamamlayın.</span></h2>
       
-      <label for="turkishCitizen">Vatandaşlık</label>
-      <select id="turkishCitizen" title="Vatandaşlık durumunuzu seçin">
+      <select id="citizenship" title="Vatandaşlık durumunuzu seçin">
         <option value="">Seçiniz...</option>
       </select>
 
-      <label for="paymentMethods">Ödeme Yöntemi</label>
       <select id="paymentMethods" title="Ödeme yönteminizi seçin">
         <option value="">Seçiniz...</option>
       </select>
@@ -412,662 +454,12 @@
     </div>
   </div>
 
-  <script>
-    // Global variables to store loaded data
-    let tuitionData = [];
-    let currentStep = 1;
-    const maxSteps = 3;
-    
-    // Local JSON file URL
-    const DATA_URL = './fees.json';
+  <!-- Legal Disclaimer -->
+  <div class="disclaimer" id="disclaimer">
+    Bu araç yalnızca bilgilendirme amaçlıdır. Resmi ücret bilgileri için üniversite ile iletişime geçiniz.
+  </div>
 
-    // Load tuition data from local JSON file
-    async function loadTuitionData() {
-      try {
-        console.log('Attempting to fetch data from:', DATA_URL);
-        
-        const response = await fetch(DATA_URL, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-        });
-        
-        console.log('Response status:', response.status);
-        console.log('Response ok:', response.ok);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const text = await response.text();
-        console.log('Raw response text (first 200 chars):', text.substring(0, 200));
-        
-        tuitionData = JSON.parse(text);
-        console.log('Tuition data loaded successfully:', tuitionData.length, 'records');
-        
-        // Validate data structure
-        if (!Array.isArray(tuitionData) || tuitionData.length === 0) {
-          throw new Error('Invalid data format: Expected non-empty array');
-        }
-        
-        // Filter out empty records (where all required fields are empty)
-        tuitionData = tuitionData.filter(item => 
-          item.Admit_Year && item.Academic_Program && item.Admit_Type && 
-          item.Turkish_Citizen && item.Payment_Methods
-        );
-        
-        console.log('Filtered tuition data:', tuitionData.length, 'valid records');
-        
-        // Populate initial dropdown
-        populateDropdowns();
-      } catch (error) {
-        console.error('Detailed error loading tuition data:', error);
-        
-        // More specific error messages
-        let errorMessage = 'Veri yüklenirken hata oluştu: ';
-        
-        if (error.message.includes('Failed to fetch')) {
-          errorMessage += 'fees.json dosyası bulunamadı veya erişilemedi. Dosyanın doğru konumda olduğundan emin olun. ';
-        } else if (error.message.includes('HTTP error')) {
-          errorMessage += `Dosya okuma hatası (${error.message}). `;
-        } else if (error.message.includes('Invalid data format')) {
-          errorMessage += 'JSON veri formatı geçersiz. ';
-        } else {
-          errorMessage += error.message + '. ';
-        }
-        
-        errorMessage += 'Fallback verilerle devam ediliyor...';
-        
-        console.log('Error details for debugging:');
-        console.log('- URL:', DATA_URL);
-        console.log('- Error type:', error.constructor.name);
-        console.log('- Error message:', error.message);
-        console.log('- Stack:', error.stack);
-        
-        alert(errorMessage);
-        
-        // Load fallback data for testing
-        loadFallbackData();
-      }
-    }
-
-    // Fallback data for testing when Google Apps Script is not accessible
-    function loadFallbackData() {
-      console.log('Loading fallback data...');
-      tuitionData = [
-        {
-          "Admit_Year": 2025,
-          "Academic_Program": "Other",
-          "Admit_Type": "LYS",
-          "LYS_Scholarship": "None",
-          "Waivers": "None",
-          "Sibling_Discount": "No",
-          "Turkish_Citizen": "Yes",
-          "Payment_Methods": "Single Payment",
-          "Tuition_Fee": 1565000,
-          "Tuition_Fall": 782500,
-          "Tuition_Spring": 782500,
-          "Currency": "Turkish Lira"
-        },
-        {
-          "Admit_Year": 2025,
-          "Academic_Program": "School of Medicine",
-          "Admit_Type": "LYS",
-          "LYS_Scholarship": "None",
-          "Waivers": "None",
-          "Sibling_Discount": "No",
-          "Turkish_Citizen": "Yes",
-          "Payment_Methods": "Installment",
-          "Tuition_Fee": 2330000,
-          "Tuition_Fall": 1165000,
-          "Tuition_Spring": 1165000,
-          "Currency": "Turkish Lira"
-        },
-        {
-          "Admit_Year": 2025,
-          "Academic_Program": "Other",
-          "Admit_Type": "International",
-          "LYS_Scholarship": "None",
-          "Waivers": "None",
-          "Sibling_Discount": "No",
-          "Turkish_Citizen": "No",
-          "Payment_Methods": "Single Payment",
-          "Tuition_Fee": 28000,
-          "Tuition_Fall": 14000,
-          "Tuition_Spring": 14000,
-          "Currency": "US Dollar"
-        },
-        {
-          "Admit_Year": 2024,
-          "Academic_Program": "Other",
-          "Admit_Type": "LYS",
-          "LYS_Scholarship": "25%",
-          "Waivers": "None",
-          "Sibling_Discount": "No",
-          "Turkish_Citizen": "Yes",
-          "Payment_Methods": "Installment",
-          "Tuition_Fee": 1200000,
-          "Tuition_Fall": 600000,
-          "Tuition_Spring": 600000,
-          "Currency": "Turkish Lira"
-        }
-      ];
-      
-      console.log('Fallback data loaded:', tuitionData);
-      populateDropdowns();
-    }
-
-    // Test function to manually check local JSON file connection
-    async function testGoogleAppsScript() {
-      console.log('🔍 Testing local JSON file connection...');
-      
-      const diagnostics = {
-        url: DATA_URL,
-        timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent,
-        tests: []
-      };
-      
-      // Test: Local JSON file connectivity
-      try {
-        console.log('Test: Local JSON file fetch test...');
-        const response = await fetch(DATA_URL, {
-          method: 'GET',
-        });
-        
-        diagnostics.tests.push({
-          name: 'Local JSON Fetch',
-          status: 'SUCCESS',
-          details: {
-            status: response.status,
-            statusText: response.statusText,
-            ok: response.ok,
-            type: response.type,
-            url: response.url
-          }
-        });
-        
-        const text = await response.text();
-        console.log('Response text (first 500 chars):', text.substring(0, 500));
-        
-        try {
-          const data = JSON.parse(text);
-          console.log('✅ JSON parsing successful, records found:', data.length);
-          
-          // Filter valid records
-          const validData = data.filter(item => 
-            item.Admit_Year && item.Academic_Program && item.Admit_Type && 
-            item.Turkish_Citizen && item.Payment_Methods
-          );
-          
-          diagnostics.tests.push({
-            name: 'JSON Parsing',
-            status: 'SUCCESS',
-            details: {
-              totalRecords: data.length,
-              validRecords: validData.length,
-              sampleRecord: validData[0] || null
-            }
-          });
-          
-          alert(`✅ Bağlantı başarılı!\n\n📊 Toplam ${data.length} kayıt bulundu\n✅ Geçerli ${validData.length} kayıt\n� Dosya: ${DATA_URL}\n⏰ Test zamanı: ${new Date().toLocaleString('tr-TR')}`);
-          
-          // Use the successfully loaded data
-          tuitionData = validData;
-          populateDropdowns();
-          
-        } catch (parseError) {
-          diagnostics.tests.push({
-            name: 'JSON Parsing',
-            status: 'FAILED',
-            error: parseError.message,
-            rawResponse: text.substring(0, 200)
-          });
-          
-          console.error('❌ JSON parsing failed:', parseError);
-          alert(`❌ JSON çözümleme hatası:\n${parseError.message}\n\nHam yanıt (ilk 200 karakter):\n${text.substring(0, 200)}`);
-        }
-        
-      } catch (error) {
-        diagnostics.tests.push({
-          name: 'Local JSON Fetch',
-          status: 'FAILED',
-          error: error.message,
-          errorType: error.constructor.name
-        });
-        
-        console.error('❌ Connection test failed:', error);
-        
-        let errorAnalysis = '❌ Dosya bağlantı testi başarısız:\n\n';
-        
-        if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-          errorAnalysis += '🚫 Dosya Erişim Hatası:\n';
-          errorAnalysis += '• fees.json dosyası bulunamadı\n';
-          errorAnalysis += '• Dosya yolu yanlış\n';
-          errorAnalysis += '• Web sunucusu çalışmıyor\n';
-          errorAnalysis += '• CORS kısıtlaması (file:// protokolü)\n\n';
-          errorAnalysis += '✅ Çözüm Önerileri:\n';
-          errorAnalysis += '1. Dosyanın doğru konumda olduğunu kontrol edin\n';
-          errorAnalysis += '2. Web sunucusu üzerinden çalıştırın (localhost)\n';
-          errorAnalysis += '3. Live Server uzantısını kullanın\n';
-          errorAnalysis += '4. Dosya izinlerini kontrol edin';
-        } else {
-          errorAnalysis += `Hata türü: ${error.name}\n`;
-          errorAnalysis += `Hata mesajı: ${error.message}`;
-        }
-        
-        alert(errorAnalysis);
-      }
-      
-      // Log full diagnostics
-      console.log('🔍 Full diagnostics report:', diagnostics);
-      
-      console.log('💡 Troubleshooting tips:');
-      console.log('1. Make sure fees.json is in the same directory as index.html');
-      console.log('2. Use a web server (localhost) instead of opening file:// directly');
-      console.log('3. Check browser console for detailed error messages');
-      console.log('4. Verify JSON file syntax is valid');
-    }
-
-    // Get unique values for a specific field from the data
-    function getUniqueValues(field) {
-      const values = tuitionData
-        .map(item => item[field])
-        .filter(value => value && value !== "")
-        .filter((value, index, array) => array.indexOf(value) === index)
-        .sort();
-      return values;
-    }
-
-    // Filter data based on current selections
-    function getFilteredData() {
-      let filtered = tuitionData.filter(item => {
-        // Only return items that have all required fields
-        return item.Admit_Year && item.Academic_Program && item.Admit_Type && 
-               item.LYS_Scholarship && item.Waivers && item.Sibling_Discount && 
-               item.Turkish_Citizen && item.Payment_Methods && item.Tuition_Fee;
-      });
-
-      // Apply filters based on current selections
-      const admitYear = document.getElementById('admitYear').value;
-      const academicProgram = document.getElementById('academicProgram').value;
-      const admitType = document.getElementById('admitType').value;
-      const lysScholarship = document.getElementById('lysScholarship').value;
-      const waivers = document.getElementById('waivers').value;
-      const siblingDiscount = document.getElementById('siblingDiscount').value;
-      const turkishCitizen = document.getElementById('turkishCitizen').value;
-
-      if (admitYear) filtered = filtered.filter(item => item.Admit_Year == admitYear);
-      if (academicProgram) filtered = filtered.filter(item => item.Academic_Program === academicProgram);
-      if (admitType) filtered = filtered.filter(item => item.Admit_Type === admitType);
-      if (lysScholarship) filtered = filtered.filter(item => item.LYS_Scholarship === lysScholarship);
-      if (waivers) filtered = filtered.filter(item => item.Waivers === waivers);
-      if (siblingDiscount) filtered = filtered.filter(item => item.Sibling_Discount === siblingDiscount);
-      if (turkishCitizen) filtered = filtered.filter(item => item.Turkish_Citizen === turkishCitizen);
-
-      return filtered;
-    }
-
-    // Populate dropdowns based on current data
-    function populateDropdowns() {
-      // Hide loading indicator and show form
-      document.getElementById('loading-indicator').style.display = 'none';
-      document.getElementById('form-content').classList.remove('form-content-hidden');
-      
-      // Populate initial dropdowns with the new order - use full dataset for year
-      populateDropdown('admitYear', 'Admit_Year', tuitionData);
-      populateDropdown('academicProgram', 'Academic_Program', tuitionData);
-      populateDropdown('admitType', 'Admit_Type', tuitionData);
-      updateDependentDropdowns();
-    }
-
-    // Populate a specific dropdown
-    function populateDropdown(elementId, field, filtered = null) {
-      const select = document.getElementById(elementId);
-      const currentValue = select.value;
-      
-      // Clear current options except the first one
-      select.innerHTML = '<option value="">Seçiniz...</option>';
-      
-      const data = filtered || tuitionData;
-      const values = data
-        .map(item => item[field])
-        .filter(value => value && value !== "")
-        .filter((value, index, array) => array.indexOf(value) === index)
-        .sort();
-
-      values.forEach(value => {
-        const option = document.createElement('option');
-        option.value = value;
-        option.textContent = value;
-        if (value === currentValue) option.selected = true;
-        select.appendChild(option);
-      });
-    }
-
-    // Update dependent dropdowns based on current selections
-    function updateDependentDropdowns() {
-      const filtered = getFilteredData();
-      
-      // Update dropdowns based on current step and selections
-      if (currentStep >= 1) {
-        // Always populate from full dataset for first level dropdowns
-        populateDropdown('admitYear', 'Admit_Year', tuitionData);
-        populateDropdown('academicProgram', 'Academic_Program', getFilteredData());
-        populateDropdown('admitType', 'Admit_Type', getFilteredData());
-        
-        // Handle LYS scholarship conditional logic
-        handleLYSScholarshipVisibility();
-      }
-      if (currentStep >= 2) {
-        populateDropdown('waivers', 'Waivers', getFilteredData());
-        populateDropdown('siblingDiscount', 'Sibling_Discount', getFilteredData());
-        
-        // Only populate LYS scholarship if it's visible
-        if (!document.getElementById('lys-scholarship-section').classList.contains('hidden')) {
-          populateDropdown('lysScholarship', 'LYS_Scholarship', getFilteredData());
-        }
-      }
-      if (currentStep >= 3) {
-        populateDropdown('turkishCitizen', 'Turkish_Citizen', getFilteredData());
-        populateDropdown('paymentMethods', 'Payment_Methods', getFilteredData());
-      }
-    }
-
-    // Handle LYS scholarship section visibility
-    function handleLYSScholarshipVisibility() {
-      const admitType = document.getElementById('admitType').value;
-      const lysSection = document.getElementById('lys-scholarship-section');
-      const lysSelect = document.getElementById('lysScholarship');
-      
-      if (admitType === 'LYS') {
-        lysSection.classList.remove('hidden');
-      } else {
-        lysSection.classList.add('hidden');
-        lysSelect.value = ''; // Clear selection when hidden
-      }
-    }
-
-    // Step navigation functions
-    function nextStep() {
-      if (currentStep < maxSteps) {
-        document.getElementById(`step-${currentStep}`).classList.remove('active');
-        document.getElementById(`progress-${currentStep}`).classList.add('active');
-        currentStep++;
-        document.getElementById(`step-${currentStep}`).classList.add('active');
-        
-        // Update step counter in header
-        document.getElementById('step-counter').textContent = `Adım ${currentStep} / ${maxSteps}`;
-        
-        updateDependentDropdowns();
-        updateStepButtons();
-      }
-    }
-
-    function prevStep() {
-      if (currentStep > 1) {
-        document.getElementById(`step-${currentStep}`).classList.remove('active');
-        document.getElementById(`progress-${currentStep}`).classList.remove('active');
-        currentStep--;
-        document.getElementById(`step-${currentStep}`).classList.add('active');
-        
-        // Update step counter in header
-        document.getElementById('step-counter').textContent = `Adım ${currentStep} / ${maxSteps}`;
-        
-        updateStepButtons();
-      }
-    }
-
-    // Calculate and display results
-    function calculateResults() {
-      const selections = {
-        admitYear: document.getElementById('admitYear').value,
-        academicProgram: document.getElementById('academicProgram').value,
-        admitType: document.getElementById('admitType').value,
-        lysScholarship: document.getElementById('lysScholarship').value || 'None',
-        waivers: document.getElementById('waivers').value,
-        siblingDiscount: document.getElementById('siblingDiscount').value,
-        turkishCitizen: document.getElementById('turkishCitizen').value,
-        paymentMethods: document.getElementById('paymentMethods').value
-      };
-
-      // Find matching tuition data
-      const matchingData = tuitionData.find(item => 
-        item.Admit_Year == selections.admitYear &&
-        item.Academic_Program === selections.academicProgram &&
-        item.Admit_Type === selections.admitType &&
-        item.LYS_Scholarship === selections.lysScholarship &&
-        item.Waivers === selections.waivers &&
-        item.Sibling_Discount === selections.siblingDiscount &&
-        item.Turkish_Citizen === selections.turkishCitizen &&
-        item.Payment_Methods === selections.paymentMethods
-      );
-
-      displayResults(selections, matchingData);
-    }
-
-    function startOver() {
-      // Reset to step 1
-      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
-      document.querySelectorAll('.progress-step').forEach(progress => progress.classList.remove('active'));
-      
-      currentStep = 1;
-      document.getElementById('step-1').classList.add('active');
-      document.getElementById('progress-1').classList.add('active');
-      
-      // Update step counter in header
-      document.getElementById('step-counter').textContent = `Adım ${currentStep} / ${maxSteps}`;
-      
-      // Reset form values
-      document.getElementById('admitYear').value = '';
-      document.getElementById('academicProgram').value = '';
-      document.getElementById('admitType').value = '';
-      document.getElementById('lysScholarship').value = '';
-      document.getElementById('waivers').value = '';
-      document.getElementById('siblingDiscount').value = '';
-      document.getElementById('turkishCitizen').value = '';
-      document.getElementById('paymentMethods').value = '';
-      
-      // Hide results and LYS section
-      document.getElementById('results-section').classList.add('hidden');
-      document.getElementById('lys-scholarship-section').classList.add('hidden');
-      
-      // Reset buttons
-      updateStepButtons();
-      
-      // Repopulate dropdowns
-      populateDropdowns();
-    }
-
-    // Update step buttons based on current selections
-    function updateStepButtons() {
-      const buttons = [
-        { 
-          step: 1, 
-          element: 'step1-next', 
-          fields: ['admitYear', 'academicProgram', 'admitType'] 
-        },
-        { 
-          step: 2, 
-          element: 'step2-next', 
-          fields: ['waivers', 'siblingDiscount'],
-          conditionalFields: [
-            { condition: () => document.getElementById('admitType').value === 'LYS', field: 'lysScholarship' }
-          ]
-        },
-        { 
-          step: 3, 
-          element: 'step3-next', 
-          fields: ['turkishCitizen', 'paymentMethods'] 
-        }
-      ];
-
-      buttons.forEach(button => {
-        const buttonElement = document.getElementById(button.element);
-        if (buttonElement) {
-          let allSelected = true;
-
-          // Check required fields
-          if (button.fields) {
-            allSelected = button.fields.every(field => 
-              document.getElementById(field).value !== ''
-            );
-          }
-
-          // Check conditional fields
-          if (allSelected && button.conditionalFields) {
-            button.conditionalFields.forEach(conditional => {
-              if (conditional.condition()) {
-                allSelected = allSelected && document.getElementById(conditional.field).value !== '';
-              }
-            });
-          }
-
-          buttonElement.disabled = !allSelected;
-        }
-      });
-    }
-
-    // Display final results with conditional payment display
-    function displayResults(selections, matchingData) {
-      let resultsHTML = '';
-      
-      if (matchingData) {
-        const currency = matchingData.Currency;
-        const currencySymbol = currency === 'Turkish Lira' ? 'TL' : 
-                              currency === 'US Dollar' ? 'USD' : currency;
-        const paymentMethod = selections.paymentMethods;
-
-        resultsHTML = `
-          <div class="result-item">
-            <span>Kabul Yılı:</span>
-            <span>${selections.admitYear}</span>
-          </div>
-          <div class="result-item">
-            <span>Akademik Program:</span>
-            <span>${selections.academicProgram}</span>
-          </div>
-          <div class="result-item">
-            <span>Kabul Tipi:</span>
-            <span>${selections.admitType}</span>
-          </div>`;
-
-        // Show LYS scholarship only if applicable
-        if (selections.admitType === 'LYS') {
-          resultsHTML += `
-          <div class="result-item">
-            <span>LYS Bursu:</span>
-            <span>${selections.lysScholarship}</span>
-          </div>`;
-        }
-
-        resultsHTML += `
-          <div class="result-item">
-            <span>Muafiyetler:</span>
-            <span>${selections.waivers}</span>
-          </div>
-          <div class="result-item">
-            <span>Kardeş İndirimi:</span>
-            <span>${selections.siblingDiscount}</span>
-          </div>
-          <div class="result-item">
-            <span>Vatandaşlık:</span>
-            <span>${selections.turkishCitizen}</span>
-          </div>
-          <div class="result-item">
-            <span>Ödeme Yöntemi:</span>
-            <span>${selections.paymentMethods}</span>
-          </div>`;
-
-        // Conditional payment display based on payment method
-        if (paymentMethod === 'Single Payment') {
-          const tuitionFee = matchingData.Tuition_Fee;
-          resultsHTML += `
-          <div class="result-item">
-            <span>TOPLAM EĞİTİM ÜCRETİ:</span>
-            <span>${tuitionFee.toLocaleString()} ${currencySymbol}</span>
-          </div>`;
-        } else if (paymentMethod === 'Installment') {
-          const tuitionFall = matchingData.Tuition_Fall;
-          const tuitionSpring = matchingData.Tuition_Spring;
-          
-          // Check if installment data is available (not "NA")
-          if (tuitionFall !== "NA" && tuitionSpring !== "NA" && 
-              tuitionFall !== null && tuitionSpring !== null &&
-              typeof tuitionFall === 'number' && typeof tuitionSpring === 'number') {
-            resultsHTML += `
-            <div class="result-item">
-              <span>Güz Dönemi Ücreti:</span>
-              <span>${tuitionFall.toLocaleString()} ${currencySymbol}</span>
-            </div>
-            <div class="result-item">
-              <span>Bahar Dönemi Ücreti:</span>
-              <span>${tuitionSpring.toLocaleString()} ${currencySymbol}</span>
-            </div>
-            <div class="result-item">
-              <span>TOPLAM YILLIK ÜCRET:</span>
-              <span>${(tuitionFall + tuitionSpring).toLocaleString()} ${currencySymbol}</span>
-            </div>`;
-          } else {
-            // Fallback to single payment if installment data is not available
-            const tuitionFee = matchingData.Tuition_Fee;
-            resultsHTML += `
-            <div class="result-item">
-              <span>TOPLAM EĞİTİM ÜCRETİ:</span>
-              <span>${tuitionFee.toLocaleString()} ${currencySymbol}</span>
-            </div>
-            <div class="result-item">
-              <span>Not:</span>
-              <span>Taksitli ödeme bilgisi mevcut değil</span>
-            </div>`;
-          }
-        }
-      } else {
-        resultsHTML = `
-          <div class="result-item">
-            <span>Uyarı:</span>
-            <span>Seçimlerinize uygun ücret bilgisi bulunamadı.</span>
-          </div>
-        `;
-      }
-      
-      document.getElementById('resultSummary').innerHTML = resultsHTML;
-      document.getElementById('results-section').classList.remove('hidden');
-    }
-
-    // Event listeners for form validation and dependent updates
-    function setupEventListeners() {
-      const fields = [
-        'admitYear', 'academicProgram', 'admitType', 'lysScholarship', 
-        'waivers', 'siblingDiscount', 'turkishCitizen', 'paymentMethods'
-      ];
-
-      fields.forEach(fieldId => {
-        const element = document.getElementById(fieldId);
-        if (element) {
-          element.addEventListener('change', function() {
-            // Handle LYS scholarship visibility when admit type changes
-            if (fieldId === 'admitType') {
-              handleLYSScholarshipVisibility();
-            }
-            
-            updateDependentDropdowns();
-            updateStepButtons();
-          });
-        }
-      });
-    }
-
-    // Initialize the wizard
-    document.addEventListener('DOMContentLoaded', function() {
-      loadTuitionData().then(() => {
-        setupEventListeners();
-        updateStepButtons();
-      });
-    });
-  </script>
+  <script src="assets/fees.js"></script>
 
 </body>
 </html>
